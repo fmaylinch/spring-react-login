@@ -1,25 +1,19 @@
 import React from 'react';
-import axios from 'axios';
+import NoteList from './NoteList';
+import LoginForm from './LoginForm';
 
-class Main extends React.Component {
+export default class Main extends React.Component {
 
     constructor(props, context) {
         super(props, context);
-
         this.state = {
-            notes: [ ]
-        };
+            user: null
+        }
     }
 
-    componentDidMount() {
-
-        axios.get("/api/notes").then(response => {
-
-            const notes = response.data;
-            console.log(notes);
-
-            this.setState({ notes: notes })
-        });
+    login(user) {
+        console.log("User received", user);
+        this.setState({ user: user });
     }
 
     render() {
@@ -27,13 +21,14 @@ class Main extends React.Component {
         return (
             <div>
                 <h1>Notes App</h1>
-                <h2>Notes:</h2>
-                <ul>
-                    { this.state.notes.map(x => <li>{x}</li>) }
-                </ul>
+
+                { this.state.user != null ?
+                    <NoteList />
+                    :
+                    <LoginForm title="Login to see your notes" onLogin={user => this.login(user)} />
+                }
+
             </div>
         );
     }
 }
-
-export default Main;
