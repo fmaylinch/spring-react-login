@@ -3,11 +3,22 @@ import axios from 'axios';
 
 class Main extends React.Component {
 
+    constructor(props, context) {
+        super(props, context);
+
+        this.state = {
+            notes: [ ]
+        };
+    }
+
     componentDidMount() {
 
         axios.get("/api/notes").then(response => {
+
             const notes = response.data;
             console.log(notes);
+
+            this.setState({ notes: notes })
         });
     }
 
@@ -18,8 +29,7 @@ class Main extends React.Component {
                 <h1>Notes App</h1>
                 <h2>Notes:</h2>
                 <ul>
-                    <li>One note</li>
-                    <li>Another note</li>
+                    { this.state.notes.map(x => <li>{x}</li>) }
                 </ul>
             </div>
         );
